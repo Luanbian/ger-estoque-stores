@@ -11,7 +11,10 @@ const Home = ({ data }: Props) => {
 
   return (
     <div>
-      {showcase ? JSON.stringify(showcase, null, 2) : "No showcase available"}
+      <h1>
+        {showcase && showcase.name ? showcase.name : "No showcase available"}
+      </h1>
+      <h2>{showcase && showcase.hash ? showcase.hash : "No hash available"}</h2>
     </div>
   );
 };
