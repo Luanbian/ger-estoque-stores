@@ -1,8 +1,11 @@
+import MainLayout from "./app/layout";
+import Home from "./app/page";
+
 function App() {
   return (
-    <>
-      <p>Hello</p>
-    </>
+    <MainLayout>
+      <Home />
+    </MainLayout>
   );
 }
 
