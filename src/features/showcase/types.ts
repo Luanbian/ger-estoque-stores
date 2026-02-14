@@ -1,10 +1,13 @@
 export interface Showcase {
   _id: string;
   tenantId: string;
+  domain: string;
   name: string;
   hash: string;
   banner: string;
   logo: string;
+  showName: boolean;
+  showStories: boolean;
   presentation: {
     title: string;
     image: string;
@@ -20,5 +23,12 @@ export interface Showcase {
       title: string;
       description: string;
     };
+  };
+  testimonials: {
+    title: string;
+    sections: {
+      title: string;
+      description: string;
+    }[];
   };
 }
