@@ -1,18 +1,22 @@
 import type { Product } from "@/features/order/types";
+import { convertFromCents } from "@/utils/convertCents";
 
 interface Props {
   data: {
     order: Product[];
+    totalPrice: number;
   };
   actions: {
     navigateBack: () => void;
     makeOrder: () => void;
+    removeItem: (productId: string) => void;
+    clearCart: () => void;
   };
 }
 
 const OrderPage = ({ data, actions }: Props) => {
-  const { order } = data;
-  const { navigateBack, makeOrder } = actions;
+  const { order, totalPrice } = data;
+  const { navigateBack, makeOrder, removeItem, clearCart } = actions;
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/40">
@@ -34,23 +38,24 @@ const OrderPage = ({ data, actions }: Props) => {
                   key={product._id}
                   className="flex justify-between items-center p-4 bg-white rounded shadow"
                 >
-                  <span>{product.name}</span>
-                  <span className="font-semibold">
-                    R$ {product.price.toFixed(2)}
+                  <span>
+                    {product.name} x {product.quantity}
                   </span>
+                  <span className="font-semibold">
+                    R$ {convertFromCents(product.price)}
+                  </span>
+                  <button
+                    className="text-red-500 ml-4 cursor-pointer"
+                    onClick={() => removeItem(product._id)}
+                  >
+                    Remover
+                  </button>
                 </li>
               ))}
             </ul>
             <div className="mt-6 flex justify-end items-center">
               <span className="text-lg font-bold">
-                Total: R${" "}
-                {order
-                  .reduce(
-                    (total, product) =>
-                      total + product.price * product.quantity,
-                    0,
-                  )
-                  .toFixed(2)}
+                Total: R$ {convertFromCents(totalPrice)}
               </span>
             </div>
           </div>
@@ -66,6 +71,13 @@ const OrderPage = ({ data, actions }: Props) => {
           </button>
           <button
             className="bg-primary text-white px-6 py-2 rounded font-bold shadow cursor-pointer"
+            onClick={clearCart}
+          >
+            Limpar carrinho
+          </button>
+          <button
+            className="bg-primary text-white px-6 py-2 rounded font-bold shadow cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={order.length === 0}
             onClick={makeOrder}
           >
             Realizar Pedido

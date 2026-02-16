@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/popover";
 import { ASSETS_BASE_URL } from "@/constants/assets";
 import { useOrderStore } from "@/features/order/order";
+import { convertFromCents } from "@/utils/convertCents";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +22,7 @@ export const Header = ({ data }: Props) => {
   const navigate = useNavigate();
   const { logo, showName, name } = data;
 
-  const products = useOrderStore((state) => state.products);
+  const { products, totalPrice } = useOrderStore((state) => state);
 
   const handleNavigateToOrders = () => {
     navigate("/orders");
@@ -55,7 +56,7 @@ export const Header = ({ data }: Props) => {
                       {product.name} x {product.quantity}
                     </span>
                     <span>
-                      R$ {(product.price * product.quantity).toFixed(2)}
+                      R$ {convertFromCents(product.price * product.quantity)}
                     </span>
                   </li>
                 ))}
@@ -65,13 +66,7 @@ export const Header = ({ data }: Props) => {
             <div className="flex justify-between">
               <span className="font-bold">Total:</span>
               <span className="font-bold">
-                R${" "}
-                {products
-                  .reduce(
-                    (acc, product) => acc + product.price * product.quantity,
-                    0,
-                  )
-                  .toFixed(2)}
+                R$ {convertFromCents(totalPrice())}
               </span>
             </div>
             <Button

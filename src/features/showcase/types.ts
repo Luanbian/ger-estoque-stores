@@ -42,3 +42,8 @@ export interface Showcase {
     }[];
   }[];
 }
+
+export interface ShowcaseStore {
+  showcase: Showcase | null;
+  setShowcase: (showcase: Showcase | null) => void;
+}

@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Product } from "@/features/order/types";
+import { convertFromCents } from "@/utils/convertCents";
 
 interface Props {
   data: {
@@ -28,7 +29,9 @@ export const CatalogItem = ({ data, actions }: Props) => {
       </CardHeader>
 
       <CardContent>
-        <p className="text-lg font-semibold">R$ {product.price.toFixed(2)}</p>
+        <p className="text-lg font-semibold">
+          R$ {convertFromCents(product.price)}
+        </p>
       </CardContent>
 
       <CardFooter>

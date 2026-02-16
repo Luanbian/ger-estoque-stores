@@ -12,3 +12,20 @@ export interface OrderStore {
   clearCart: () => void;
   totalPrice: () => number;
 }
+
+export interface CreateOrderPayload {
+  tenantId: string;
+  domain: string;
+  totalAmount: number;
+  items: {
+    productId: string;
+    nameSnapshot: string;
+    quantity: number;
+    priceSnapshot: number;
+  }[];
+  customer: {
+    name: string;
+    email: string | null;
+    phone: string;
+  };
+}

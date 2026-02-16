@@ -1,21 +1,13 @@
-import { useEffect, useState } from "react";
-import type { Showcase } from "../features/showcase/types";
-import { getShowcase } from "../features/showcase/request";
+import { useEffect } from "react";
 import Home from "./page";
-import { getSubdomain } from "../utils/getSubdomain";
+import { useShowcaseStore } from "@/features/showcase/showcase";
 
 const MainLayout = () => {
-  const [showcase, setShowcase] = useState<Showcase | null>(null);
+  const { showcase, setShowcase } = useShowcaseStore((state) => state);
 
   useEffect(() => {
-    const fetchShowcase = async () => {
-      const subdomain = getSubdomain();
-      const result = await getShowcase(subdomain);
-      setShowcase(result);
-    };
-
-    fetchShowcase();
-  }, []);
+    setShowcase(null);
+  }, [setShowcase]);
 
   return <Home data={{ showcase }} />;
 };
