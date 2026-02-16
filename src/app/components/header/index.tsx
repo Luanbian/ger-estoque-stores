@@ -5,6 +5,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { ASSETS_BASE_URL } from "@/constants/assets";
+import { useOrderStore } from "@/features/order/order";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +20,8 @@ interface Props {
 export const Header = ({ data }: Props) => {
   const navigate = useNavigate();
   const { logo, showName, name } = data;
+
+  const products = useOrderStore((state) => state.products);
 
   const handleNavigateToOrders = () => {
     navigate("/orders");
@@ -42,13 +45,41 @@ export const Header = ({ data }: Props) => {
         <PopoverContent className="bg-white rounded-lg p-4">
           <div>
             <p className="text-lg font-bold">Carrinho de Compras</p>
-            <p>Seu carrinho está vazio.</p>
+            {products.length === 0 ? (
+              <p className="mt-2">Seu carrinho está vazio.</p>
+            ) : (
+              <ul className="mt-2">
+                {products.slice(0, 3).map((product) => (
+                  <li key={product._id} className="flex justify-between">
+                    <span>
+                      {product.name} x {product.quantity}
+                    </span>
+                    <span>
+                      R$ {(product.price * product.quantity).toFixed(2)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <hr className="my-4" />
+            <div className="flex justify-between">
+              <span className="font-bold">Total:</span>
+              <span className="font-bold">
+                R${" "}
+                {products
+                  .reduce(
+                    (acc, product) => acc + product.price * product.quantity,
+                    0,
+                  )
+                  .toFixed(2)}
+              </span>
+            </div>
             <Button
               variant="outline"
               className="mt-4 cursor-pointer"
               onClick={handleNavigateToOrders}
             >
-              Concluir
+              Ver detalhes do pedido
             </Button>
           </div>
         </PopoverContent>

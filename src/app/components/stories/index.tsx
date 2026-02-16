@@ -25,9 +25,9 @@ const StoriesComponent = ({ data }: Props) => {
         }));
 
         return (
-          <Dialog>
+          <Dialog key={index}>
             <DialogTrigger asChild>
-              <div key={index} className="cursor-pointer">
+              <div className="cursor-pointer">
                 <img
                   src={`${ASSETS_BASE_URL}${story.thumbnail}`}
                   alt={`Story ${index + 1}`}

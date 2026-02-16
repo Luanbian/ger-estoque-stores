@@ -5,6 +5,7 @@ import { Presentation } from "./components/presentation";
 import { Body } from "./components/body";
 import { Testimonials } from "./components/testimonials";
 import StoriesComponent from "./components/stories";
+import { CatalogList } from "./components/catalog/catalogList";
 
 interface Props {
   data: {
@@ -42,6 +43,7 @@ const Home = ({ data }: Props) => {
       <Presentation data={{ presentation: showcase.presentation }} />
       <Body data={{ body: showcase.body }} />
       <Testimonials data={{ testimonials: showcase.testimonials }} />
+      <CatalogList />
     </div>
   );
 };
