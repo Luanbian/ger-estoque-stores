@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/popover";
 import { ASSETS_BASE_URL } from "@/constants/assets";
 import { ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   data: {
@@ -16,7 +17,12 @@ interface Props {
 }
 
 export const Header = ({ data }: Props) => {
+  const navigate = useNavigate();
   const { logo, showName, name } = data;
+
+  const handleNavigateToOrders = () => {
+    navigate("/orders");
+  };
 
   return (
     <header className="flex m-2 items-center justify-between">
@@ -37,7 +43,11 @@ export const Header = ({ data }: Props) => {
           <div>
             <p className="text-lg font-bold">Carrinho de Compras</p>
             <p>Seu carrinho está vazio.</p>
-            <Button variant="outline" className="mt-4 cursor-pointer">
+            <Button
+              variant="outline"
+              className="mt-4 cursor-pointer"
+              onClick={handleNavigateToOrders}
+            >
               Concluir
             </Button>
           </div>
