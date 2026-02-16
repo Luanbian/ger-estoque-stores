@@ -3,11 +3,14 @@ import Home from "./page";
 import { useShowcaseStore } from "@/features/showcase/showcase";
 
 const MainLayout = () => {
-  const { showcase, setShowcase } = useShowcaseStore((state) => state);
+  const { showcase, setShowcase, setRequest } = useShowcaseStore(
+    (state) => state,
+  );
 
   useEffect(() => {
     setShowcase(null);
-  }, [setShowcase]);
+    setRequest({ success: true, message: null });
+  }, [setShowcase, setRequest]);
 
   return <Home data={{ showcase }} />;
 };

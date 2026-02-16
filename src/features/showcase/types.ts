@@ -45,5 +45,10 @@ export interface Showcase {
 
 export interface ShowcaseStore {
   showcase: Showcase | null;
+  request: {
+    success: boolean;
+    message: string | null;
+  };
   setShowcase: (showcase: Showcase | null) => void;
+  setRequest: (request: { success: boolean; message: string | null }) => void;
 }

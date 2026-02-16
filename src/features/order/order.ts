@@ -1,11 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { OrderStore } from "./types";
+import { postMakeOrder } from "./requests";
 
 export const useOrderStore = create<OrderStore>()(
   persist(
     (set, get) => ({
       products: [] as OrderStore["products"],
+      request: {
+        success: true,
+        message: null,
+      },
 
       addItem: (product) =>
         set((state) => {
@@ -39,6 +44,13 @@ export const useOrderStore = create<OrderStore>()(
           (total, product) => total + product.price * product.quantity,
           0,
         ),
+
+      makeOrder: async (payload) => {
+        const data = await postMakeOrder(payload);
+        set({ request: data });
+      },
+
+      setRequest: (request) => set({ request }),
     }),
     {
       name: "order-store",

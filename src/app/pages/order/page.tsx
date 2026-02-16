@@ -1,3 +1,10 @@
+import { CustomerComponent } from "@/app/components/customer";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import type { Product } from "@/features/order/types";
 import { convertFromCents } from "@/utils/convertCents";
 
@@ -8,7 +15,6 @@ interface Props {
   };
   actions: {
     navigateBack: () => void;
-    makeOrder: () => void;
     removeItem: (productId: string) => void;
     clearCart: () => void;
   };
@@ -16,7 +22,7 @@ interface Props {
 
 const OrderPage = ({ data, actions }: Props) => {
   const { order, totalPrice } = data;
-  const { navigateBack, makeOrder, removeItem, clearCart } = actions;
+  const { navigateBack, removeItem, clearCart } = actions;
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/40">
@@ -75,13 +81,23 @@ const OrderPage = ({ data, actions }: Props) => {
           >
             Limpar carrinho
           </button>
-          <button
-            className="bg-primary text-white px-6 py-2 rounded font-bold shadow cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
-            disabled={order.length === 0}
-            onClick={makeOrder}
-          >
-            Realizar Pedido
-          </button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <button
+                className="bg-primary text-white px-6 py-2 rounded font-bold shadow cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+                disabled={order.length === 0}
+              >
+                Realizar Pedido
+              </button>
+            </DialogTrigger>
+            <DialogContent className="bg-white rounded-lg p-6">
+              <DialogTitle className="text-2xl font-semibold mb-4">
+                Finalizar Pedido
+              </DialogTitle>
+              <CustomerComponent />
+            </DialogContent>
+          </Dialog>
         </div>
       </footer>
     </div>
