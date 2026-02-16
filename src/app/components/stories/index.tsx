@@ -1,23 +1,69 @@
+import Stories from "react-insta-stories";
+import { ASSETS_BASE_URL } from "@/constants/assets";
+import type { Showcase } from "@/features/showcase/types";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
 interface Props {
   data: {
-    showStories: boolean;
+    storiesProp: NonNullable<Showcase["stories"]>;
   };
 }
 
-export const Stories = ({ data }: Props) => {
-  const { showStories } = data;
-
-  if (!showStories) return;
+const StoriesComponent = ({ data }: Props) => {
+  const { storiesProp } = data;
 
   return (
-    <div className="flex gap-6 m-2 justify-center m-8">
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
-      <div className="w-16 h-16 rounded-full bg-gray-300" />
+    <div className="flex flex-row gap-8">
+      {storiesProp.map((story, index) => {
+        const storyData = story.items.map((item) => ({
+          url: `${ASSETS_BASE_URL}${item.image}`,
+          header: {
+            heading: item.title,
+            subheading: item.subtitle,
+            profileImage: `${ASSETS_BASE_URL}${story.thumbnail}`,
+          },
+        }));
+
+        return (
+          <Dialog>
+            <DialogTrigger asChild>
+              <div key={index} className="cursor-pointer">
+                <img
+                  src={`${ASSETS_BASE_URL}${story.thumbnail}`}
+                  alt={`Story ${index + 1}`}
+                  className="w-16 h-16 object-cover rounded-full"
+                />
+                <p className="text-center">{story.title}</p>
+              </div>
+            </DialogTrigger>
+            <DialogContent className="bg-white rounded-lg p-4">
+              <Stories
+                stories={storyData}
+                defaultInterval={1500}
+                width={400}
+                height={700}
+              />
+            </DialogContent>
+          </Dialog>
+        );
+      })}
     </div>
   );
 };
+
+interface PropsHOC {
+  data: {
+    showStories: boolean;
+    storiesProp?: Showcase["stories"];
+  };
+}
+
+const StoriesComponentHOC = ({ data }: PropsHOC) => {
+  const { showStories, storiesProp } = data;
+
+  if (!showStories || !storiesProp) return null;
+
+  return <StoriesComponent data={{ storiesProp }} />;
+};
+
+export default StoriesComponentHOC;

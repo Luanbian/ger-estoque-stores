@@ -3,8 +3,8 @@ import { Header } from "./components/header";
 import { ASSETS_BASE_URL } from "@/constants/assets";
 import { Presentation } from "./components/presentation";
 import { Body } from "./components/body";
-import { Stories } from "./components/stories";
 import { Testimonials } from "./components/testimonials";
+import StoriesComponent from "./components/stories";
 
 interface Props {
   data: {
@@ -33,7 +33,12 @@ const Home = ({ data }: Props) => {
         alt="Banner"
         className="w-full max-h-[800px] object-fill"
       />
-      <Stories data={{ showStories: showcase.showStories }} />
+      <StoriesComponent
+        data={{
+          showStories: showcase.showStories,
+          storiesProp: showcase.stories,
+        }}
+      />
       <Presentation data={{ presentation: showcase.presentation }} />
       <Body data={{ body: showcase.body }} />
       <Testimonials data={{ testimonials: showcase.testimonials }} />
