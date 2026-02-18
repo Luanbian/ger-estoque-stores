@@ -41,7 +41,14 @@ export const Header = ({ data }: Props) => {
       </div>
       <Popover>
         <PopoverTrigger asChild className="cursor-pointer">
-          <ShoppingCart />
+          <div className="relative">
+            <ShoppingCart />
+            {products.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 text-center border border-white shadow">
+                {products.length}
+              </span>
+            )}
+          </div>
         </PopoverTrigger>
         <PopoverContent className="bg-white rounded-lg p-4">
           <div>
