@@ -66,11 +66,7 @@ export const CustomerComponent = () => {
         <span className="text-red-500">{errors.name.message}</span>
       )}
 
-      <Input
-        type="email"
-        placeholder="Email"
-        {...register("email", { required: "O email é obrigatório" })}
-      />
+      <Input type="email" placeholder="Email" {...register("email")} />
       {errors.email && (
         <span className="text-red-500">{errors.email.message}</span>
       )}

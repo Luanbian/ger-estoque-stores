@@ -60,6 +60,11 @@ export const Header = ({ data }: Props) => {
                     </span>
                   </li>
                 ))}
+                {products.length > 3 && (
+                  <li className="flex justify-between">
+                    <span>...e mais {products.length - 3} itens</span>
+                  </li>
+                )}
               </ul>
             )}
             <hr className="my-4" />
