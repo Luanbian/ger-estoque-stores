@@ -17,6 +17,7 @@ export const CustomerComponent = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateOrderPayload["customer"]>();
 
   const finishOrder = (data: CreateOrderPayload["customer"]) => {
@@ -40,6 +41,7 @@ export const CustomerComponent = () => {
     };
 
     makeOrder(payload);
+    reset();
   };
 
   useEffect(() => {
