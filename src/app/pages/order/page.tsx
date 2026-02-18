@@ -2,6 +2,7 @@ import { CustomerComponent } from "@/app/components/customer";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -95,6 +96,9 @@ const OrderPage = ({ data, actions }: Props) => {
               <DialogTitle className="text-2xl font-semibold mb-4">
                 Finalizar Pedido
               </DialogTitle>
+              <DialogDescription className="mb-2 text-muted-foreground">
+                Preencha os dados abaixo para finalizar seu pedido.
+              </DialogDescription>
               <CustomerComponent />
             </DialogContent>
           </Dialog>
