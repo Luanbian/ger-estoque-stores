@@ -7,7 +7,6 @@ export interface Showcase {
   banner: string;
   logo: string;
   showName: boolean;
-  showStories: boolean;
   presentation: {
     title: string;
     image: string;
@@ -31,16 +30,6 @@ export interface Showcase {
       description: string;
     }[];
   };
-  stories?: {
-    title: string;
-    thumbnail: string;
-    items: {
-      title: string;
-      subtitle: string;
-      profileImage: string;
-      image: string;
-    }[];
-  }[];
 }
 
 export interface ShowcaseStore {

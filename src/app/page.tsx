@@ -4,7 +4,6 @@ import { ASSETS_BASE_URL } from "@/constants/assets";
 import { Presentation } from "./components/presentation";
 import { Body } from "./components/body";
 import { Testimonials } from "./components/testimonials";
-import StoriesComponent from "./components/stories";
 import { CatalogList } from "./components/catalog/catalogList";
 
 interface Props {
@@ -33,12 +32,6 @@ const Home = ({ data }: Props) => {
         src={`${ASSETS_BASE_URL}${showcase.banner}`}
         alt="Banner"
         className="w-full max-h-[800px] object-fill"
-      />
-      <StoriesComponent
-        data={{
-          showStories: showcase.showStories,
-          storiesProp: showcase.stories,
-        }}
       />
       <Presentation data={{ presentation: showcase.presentation }} />
       <Body data={{ body: showcase.body }} />
