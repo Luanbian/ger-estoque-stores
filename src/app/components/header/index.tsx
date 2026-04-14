@@ -60,11 +60,16 @@ export const Header = ({ data }: Props) => {
                 {products.slice(0, 3).map((product) => (
                   <li key={product._id} className="flex justify-between">
                     <span>
-                      {product.name} x {product.quantity}
+                      {product.title} x {product.quantity}
                     </span>
-                    <span>
-                      R$ {convertFromCents(product.price * product.quantity)}
-                    </span>
+                    {product?.pricing?.basePriceInCents ? (
+                      <span>
+                        R${" "}
+                        {convertFromCents(
+                          product.pricing.basePriceInCents * product.quantity,
+                        )}
+                      </span>
+                    ) : null}
                   </li>
                 ))}
                 {products.length > 3 && (

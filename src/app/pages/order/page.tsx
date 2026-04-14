@@ -6,12 +6,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import type { Product } from "@/features/order/types";
+import type { CatalogItem } from "@/features/catalog/types";
 import { convertFromCents } from "@/utils/convertCents";
 
 interface Props {
   data: {
-    order: Product[];
+    order: CatalogItem[];
     totalPrice: number;
   };
   actions: {
@@ -46,11 +46,14 @@ const OrderPage = ({ data, actions }: Props) => {
                   className="flex justify-between items-center p-4 bg-white rounded shadow"
                 >
                   <span>
-                    {product.name} x {product.quantity}
+                    {product.title} x {product.quantity}
                   </span>
-                  <span className="font-semibold">
-                    R$ {convertFromCents(product.price)}
-                  </span>
+                  {product.pricing?.basePriceInCents ? (
+                    <span className="font-semibold">
+                      R$ {convertFromCents(product.pricing.basePriceInCents)}
+                    </span>
+                  ) : null}
+
                   <button
                     className="text-red-500 ml-4 cursor-pointer"
                     onClick={() => removeItem(product._id)}
