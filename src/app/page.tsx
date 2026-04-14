@@ -5,15 +5,17 @@ import { Presentation } from "./components/presentation";
 import { Body } from "./components/body";
 import { Testimonials } from "./components/testimonials";
 import { CatalogList } from "./components/catalog/catalogList";
+import type { Catalog } from "@/features/catalog/types";
 
 interface Props {
   data: {
     showcase: Showcase | null;
+    catalog: Catalog | null;
   };
 }
 
 const Home = ({ data }: Props) => {
-  const { showcase } = data;
+  const { showcase, catalog } = data;
 
   if (!showcase) {
     return <>Loading...</>;
@@ -36,7 +38,7 @@ const Home = ({ data }: Props) => {
       <Presentation data={{ presentation: showcase.presentation }} />
       <Body data={{ body: showcase.body }} />
       <Testimonials data={{ testimonials: showcase.testimonials }} />
-      <CatalogList />
+      <CatalogList data={{ catalog }} />
     </div>
   );
 };

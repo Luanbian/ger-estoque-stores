@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { OrderStore } from "./types";
+import type { CatalogItem } from "../catalog/types";
 import { postMakeOrder } from "./requests";
 
 export const useOrderStore = create<OrderStore>()(
   persist(
     (set, get) => ({
-      products: [] as OrderStore["products"],
+      products: [] as CatalogItem[],
       request: {
         success: true,
         message: null,
@@ -37,11 +38,13 @@ export const useOrderStore = create<OrderStore>()(
           products: state.products.filter((p) => p._id !== productId),
         })),
 
-      clearCart: () => set({ products: [] as OrderStore["products"] }),
+      clearCart: () => set({ products: [] as CatalogItem[] }),
 
       totalPrice: () =>
         get().products.reduce(
-          (total, product) => total + product.price * product.quantity,
+          (total, product) =>
+            total +
+            (product?.pricing?.basePriceInCents || 0) * product.quantity,
           0,
         ),
 

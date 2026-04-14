@@ -1,17 +1,12 @@
-export interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import type { CatalogItem } from "../catalog/types";
 
 export interface OrderStore {
-  products: Product[];
+  products: CatalogItem[];
   request: {
     success: boolean;
     message: string | null;
   };
-  addItem: (product: Product) => void;
+  addItem: (product: CatalogItem) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
   totalPrice: () => number;
