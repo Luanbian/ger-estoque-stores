@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import type { CatalogStore } from "./types";
 import { persist } from "zustand/middleware";
-import { getCatalog } from "./request";
+import type { CatalogStore } from "./types";
+import { filterCatalogItemByCategory, getCatalog } from "./request";
 
 export const useCatalogStore = create<CatalogStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       catalog: null,
       request: {
         success: true,
@@ -27,6 +27,28 @@ export const useCatalogStore = create<CatalogStore>()(
       },
 
       setRequest: (request) => set({ request }),
+
+      selectCatalogCategory: async (categoryId: string) => {
+        const showcaseId = get().catalog?.categories?.[0]?.showcaseId || null;
+        if (!showcaseId) return;
+
+        const data = await filterCatalogItemByCategory(showcaseId, categoryId);
+        if ("success" in data) {
+          set({
+            request: {
+              success: data.success,
+              message: data.message,
+            },
+          });
+          return;
+        }
+        set({
+          catalog: {
+            categories: get().catalog?.categories ?? null,
+            items: data,
+          },
+        });
+      },
     }),
     {
       name: "catalog-store",

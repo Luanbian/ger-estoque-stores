@@ -6,8 +6,10 @@ export interface Catalog {
 export interface CatalogCategory {
   _id: string;
   tenantId: string;
+  showcaseId: string;
   name: string;
 }
+
 export interface CatalogItem {
   _id: string;
   tenantId: string;
@@ -43,4 +45,5 @@ export interface CatalogStore {
   };
   setCatalog: (showcaseId: string) => Promise<void>;
   setRequest: (request: { success: boolean; message: string | null }) => void;
+  selectCatalogCategory: (categoryId: string) => Promise<void>;
 }

@@ -16,6 +16,7 @@ interface Props {
 
 const Home = ({ data }: Props) => {
   const { showcase, catalog } = data;
+  console.log(catalog);
 
   if (!showcase) {
     return <>Loading...</>;

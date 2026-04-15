@@ -30,3 +30,24 @@ export const getCatalog = async (showcaseId: string) => {
     };
   }
 };
+
+export const filterCatalogItemByCategory = async (
+  showcaseId: string,
+  categoryId: string,
+) => {
+  try {
+    const result = await axios.post<APIResponse<CatalogItem[]>>(
+      `${API_BASE_URL}/catalog/item/list/${showcaseId}`,
+      { categoryId },
+    );
+
+    return result.data.data;
+  } catch (error) {
+    console.error("Error fetching itens filtered:", error);
+    return {
+      success: false,
+      message:
+        "Ocorreu um erro ao filtrar os itens da vitrine pela categoria. Por favor, tente novamente.",
+    };
+  }
+};
