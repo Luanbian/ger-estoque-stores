@@ -21,18 +21,71 @@ interface Props {
 export const CatalogItem = ({ data, actions }: Props) => {
   const { item } = data;
   const { addItem } = actions;
+  const { pricing } = item;
+
+  const hasDiscount = !!pricing?.discount && !!pricing?.finalPriceInCents;
+  const hasInstallments = !!pricing?.installments;
+
+  const discountLabel = pricing?.discount
+    ? pricing.discount.type === "percentage"
+      ? `-${pricing.discount.value}%`
+      : `-R$ ${convertFromCents(pricing.discount.value)}`
+    : null;
 
   return (
-    <Card className="transition hover:shadow-lg hover:-translate-y-1 duration-200">
-      <CardHeader>
-        <CardTitle className="text-base font-medium">{item.title}</CardTitle>
+    <Card className="transition hover:shadow-lg hover:-translate-y-1 duration-200 overflow-hidden">
+      {item.image && (
+        <div className="relative w-full h-40 overflow-hidden">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover"
+          />
+          {hasDiscount && discountLabel && (
+            <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {discountLabel}
+            </span>
+          )}
+        </div>
+      )}
+
+      <CardHeader className="pb-1">
+        <div className="flex items-start justify-between gap-2">
+          <CardTitle className="text-base font-medium leading-snug">
+            {item.title}
+          </CardTitle>
+          {!item.image && hasDiscount && discountLabel && (
+            <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shrink-0">
+              {discountLabel}
+            </span>
+          )}
+        </div>
       </CardHeader>
 
-      {item?.pricing?.basePriceInCents ? (
-        <CardContent>
-          <p className="text-lg font-semibold">
-            R${convertFromCents(item.pricing.basePriceInCents)}
-          </p>
+      {pricing?.basePriceInCents ? (
+        <CardContent className="pb-2 space-y-0.5">
+          {hasDiscount ? (
+            <>
+              <p className="text-sm text-muted-foreground line-through">
+                R$ {convertFromCents(pricing.basePriceInCents)}
+              </p>
+              <p className="text-lg font-bold text-green-600">
+                R$ {pricing.finalPriceInCents}
+              </p>
+            </>
+          ) : (
+            <p className="text-lg font-semibold">
+              R$ {convertFromCents(pricing.basePriceInCents)}
+            </p>
+          )}
+
+          {hasInstallments && (
+            <p className="text-xs text-muted-foreground">
+              {pricing.installments!.maxInstallments}x de R${" "}
+              {convertFromCents(pricing.installments!.installmentPriceInCents)}
+              {pricing.installments!.interestFree ? " sem juros" : " com juros"}
+            </p>
+          )}
         </CardContent>
       ) : null}
 
