@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ASSETS_BASE_URL } from "@/constants/assets";
 import type { CatalogItem as CatalogItemType } from "@/features/catalog/types";
 import { convertFromCents } from "@/utils/convertCents";
 
@@ -37,7 +38,7 @@ export const CatalogItem = ({ data, actions }: Props) => {
       {item.image && (
         <div className="relative w-full h-40 overflow-hidden">
           <img
-            src={item.image}
+            src={`${ASSETS_BASE_URL}${item.image}`}
             alt={item.title}
             className="w-full h-full object-cover"
           />
