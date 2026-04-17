@@ -34,7 +34,7 @@ export const CatalogItem = ({ data, actions }: Props) => {
     : null;
 
   return (
-    <Card className="transition hover:shadow-lg hover:-translate-y-1 duration-200 overflow-hidden">
+    <Card className="flex flex-col transition hover:shadow-lg hover:-translate-y-1 duration-200 overflow-hidden">
       {item.image && (
         <div className="relative w-full h-40 overflow-hidden">
           <img
@@ -63,34 +63,29 @@ export const CatalogItem = ({ data, actions }: Props) => {
         </div>
       </CardHeader>
 
-      {pricing?.basePriceInCents ? (
-        <CardContent className="pb-2 space-y-0.5">
-          {hasDiscount ? (
-            <>
-              <p className="text-sm text-muted-foreground line-through">
-                R$ {convertFromCents(pricing.basePriceInCents)}
-              </p>
-              {pricing.finalPriceInCents && (
-                <p className="text-lg font-bold text-green-600">
-                  R$ {convertFromCents(pricing.finalPriceInCents)}
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="text-lg font-semibold">
+      <CardContent className="flex-1 pb-2 space-y-0.5">
+        {pricing?.basePriceInCents && (
+          <>
+            <p className={`text-sm line-through ${hasDiscount ? "text-muted-foreground" : "invisible"}`}>
               R$ {convertFromCents(pricing.basePriceInCents)}
             </p>
-          )}
-
-          {hasInstallments && (
-            <p className="text-xs text-muted-foreground">
-              {pricing.installments!.maxInstallments}x de R${" "}
-              {convertFromCents(pricing.installments!.installmentPriceInCents)}
-              {pricing.installments!.interestFree ? " sem juros" : " com juros"}
+            {hasDiscount && pricing.finalPriceInCents ? (
+              <p className="text-lg font-bold text-green-600">
+                R$ {convertFromCents(pricing.finalPriceInCents)}
+              </p>
+            ) : (
+              <p className="text-lg font-semibold">
+                R$ {convertFromCents(pricing.basePriceInCents)}
+              </p>
+            )}
+            <p className={`text-xs ${hasInstallments ? "text-muted-foreground" : "invisible"}`}>
+              {hasInstallments
+                ? `${pricing.installments!.maxInstallments}x de R$ ${convertFromCents(pricing.installments!.installmentPriceInCents)}${pricing.installments!.interestFree ? " sem juros" : " com juros"}`
+                : "placeholder"}
             </p>
-          )}
-        </CardContent>
-      ) : null}
+          </>
+        )}
+      </CardContent>
 
       <CardFooter>
         <Button className="w-full cursor-pointer" onClick={() => addItem(item)}>
