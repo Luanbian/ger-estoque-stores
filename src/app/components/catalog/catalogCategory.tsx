@@ -30,7 +30,7 @@ export const CatalogCarousel = ({ data, actions }: Props) => {
           style={{ cursor: "pointer" }}
           onClick={() => selectCatalogCategory(null)}
         >
-          <div className="p-1">Sem categoria</div>
+          <div className="p-1">Todos</div>
         </CarouselItem>
         {categories.map((category) => (
           <CarouselItem
