@@ -70,9 +70,11 @@ export const CatalogItem = ({ data, actions }: Props) => {
               <p className="text-sm text-muted-foreground line-through">
                 R$ {convertFromCents(pricing.basePriceInCents)}
               </p>
-              <p className="text-lg font-bold text-green-600">
-                R$ {pricing.finalPriceInCents}
-              </p>
+              {pricing.finalPriceInCents && (
+                <p className="text-lg font-bold text-green-600">
+                  R$ {convertFromCents(pricing.finalPriceInCents)}
+                </p>
+              )}
             </>
           ) : (
             <p className="text-lg font-semibold">
