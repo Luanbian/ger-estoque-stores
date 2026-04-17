@@ -45,5 +45,5 @@ export interface CatalogStore {
   };
   setCatalog: (showcaseId: string) => Promise<void>;
   setRequest: (request: { success: boolean; message: string | null }) => void;
-  selectCatalogCategory: (categoryId: string) => Promise<void>;
+  selectCatalogCategory: (categoryId: string | null) => Promise<void>;
 }

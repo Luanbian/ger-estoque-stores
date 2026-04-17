@@ -28,7 +28,7 @@ export const useCatalogStore = create<CatalogStore>()(
 
       setRequest: (request) => set({ request }),
 
-      selectCatalogCategory: async (categoryId: string) => {
+      selectCatalogCategory: async (categoryId: string | null) => {
         const showcaseId = get().catalog?.categories?.[0]?.showcaseId || null;
         if (!showcaseId) return;
 

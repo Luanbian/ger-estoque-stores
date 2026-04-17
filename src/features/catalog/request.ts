@@ -33,7 +33,7 @@ export const getCatalog = async (showcaseId: string) => {
 
 export const filterCatalogItemByCategory = async (
   showcaseId: string,
-  categoryId: string,
+  categoryId: string | null,
 ) => {
   try {
     const result = await axios.post<APIResponse<CatalogItem[]>>(
