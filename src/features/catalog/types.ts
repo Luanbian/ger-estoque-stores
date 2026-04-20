@@ -8,6 +8,7 @@ export interface CatalogCategory {
   tenantId: string;
   showcaseId: string;
   name: string;
+  fatherCategoryId?: string;
 }
 
 export interface CatalogItem {
