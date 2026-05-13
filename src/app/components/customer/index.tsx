@@ -29,9 +29,12 @@ export const CustomerComponent = () => {
       totalAmount: totalPrice(),
       items: products.map((product) => ({
         productId: product._id,
-        nameSnapshot: product.name,
+        nameSnapshot: product.title,
         quantity: product.quantity,
-        priceSnapshot: product.price,
+        priceSnapshot:
+          product.pricing?.finalPriceInCents ??
+          product.pricing?.basePriceInCents ??
+          0,
       })),
       customer: {
         name: data.name,
