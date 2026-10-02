@@ -2,16 +2,13 @@ import type { CatalogItem } from "../catalog/types";
 
 export interface OrderStore {
   products: CatalogItem[];
-  request: {
-    success: boolean;
-    message: string | null;
-  };
   addItem: (product: CatalogItem) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
   totalPrice: () => number;
-  makeOrder: (payload: CreateOrderPayload) => void;
-  setRequest: (request: { success: boolean; message: string | null }) => void;
+  makeOrder: (
+    payload: CreateOrderPayload,
+  ) => Promise<{ success: boolean; message: string }>;
 }
 
 export interface CreateOrderPayload {

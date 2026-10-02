@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CustomerComponent } from "@/app/components/customer";
 import {
   Dialog,
@@ -25,6 +26,7 @@ interface Props {
 const OrderPage = ({ data, actions }: Props) => {
   const { order, totalPrice } = data;
   const { navigateBack, removeItem, clearCart } = actions;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/40">
@@ -87,7 +89,7 @@ const OrderPage = ({ data, actions }: Props) => {
             Limpar carrinho
           </button>
 
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <button
                 className="bg-primary text-white px-6 py-2 rounded font-bold shadow cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -103,7 +105,9 @@ const OrderPage = ({ data, actions }: Props) => {
               <DialogDescription className="mb-2 text-muted-foreground">
                 Preencha os dados abaixo para finalizar seu pedido.
               </DialogDescription>
-              <CustomerComponent />
+              <CustomerComponent
+                actions={{ closeDialog: () => setIsDialogOpen(false) }}
+              />
             </DialogContent>
           </Dialog>
         </div>

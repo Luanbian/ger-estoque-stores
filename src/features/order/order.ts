@@ -9,10 +9,6 @@ export const useOrderStore = create<OrderStore>()(
   persist(
     (set, get) => ({
       products: [] as CatalogItem[],
-      request: {
-        success: true,
-        message: null,
-      },
 
       addItem: (product) =>
         set((state) => {
@@ -49,11 +45,10 @@ export const useOrderStore = create<OrderStore>()(
         ),
 
       makeOrder: async (payload) => {
-        const data = await postMakeOrder(payload);
-        set({ request: data });
+        const result = await postMakeOrder(payload);
+        if (result.success) get().clearCart();
+        return result;
       },
-
-      setRequest: (request) => set({ request }),
     }),
     {
       name: "order-store",

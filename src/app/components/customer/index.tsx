@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useOrderStore } from "@/features/order/order";
@@ -8,20 +7,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getPriceInCents } from "@/utils/getPriceInCents";
 
-export const CustomerComponent = () => {
-  const { products, totalPrice, request, makeOrder } = useOrderStore(
-    (state) => state,
-  );
+interface Props {
+  actions: {
+    closeDialog: () => void;
+  };
+}
+
+export const CustomerComponent = ({ actions }: Props) => {
+  const { closeDialog } = actions;
+  const { products, totalPrice, makeOrder } = useOrderStore((state) => state);
   const showcase = useShowcaseStore((state) => state.showcase);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset,
+    formState: { errors, isSubmitting },
   } = useForm<CreateOrderPayload["customer"]>();
 
-  const finishOrder = (data: CreateOrderPayload["customer"]) => {
+  const finishOrder = async (data: CreateOrderPayload["customer"]) => {
     if (!showcase) return;
 
     const payload: CreateOrderPayload = {
@@ -41,19 +44,15 @@ export const CustomerComponent = () => {
       },
     };
 
-    makeOrder(payload);
-    reset();
-  };
-
-  useEffect(() => {
-    if (request.message) {
-      if (request.success) {
-        toast.success(request.message, { position: "top-center" });
-      } else {
-        toast.error(request.message, { position: "top-center" });
-      }
+    const { success, message } = await makeOrder(payload);
+    if (!success) {
+      toast.error(message, { position: "top-center" });
+      return;
     }
-  }, [request]);
+
+    toast.success(message, { position: "top-center" });
+    closeDialog();
+  };
 
   return (
     <form
@@ -83,7 +82,9 @@ export const CustomerComponent = () => {
         <span className="text-red-500">{errors.phone.message}</span>
       )}
 
-      <Button type="submit">Finalizar Pedido</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        Finalizar Pedido
+      </Button>
     </form>
   );
 };
