@@ -16,7 +16,7 @@ Vitrine multi-tenant (uma loja por subdomínio). React 19 + Vite 7 + TS + Tailwi
 ## Stores (`src/features/<domínio>/`)
 - Arquivos: `<domínio>.ts` (store), `request(s).ts` (axios) e `types.ts` (inclui o tipo `XStore`).
 - `create<XStore>()(persist((set, get) => ({...}), { name: "x-store" }))`.
-- As funções de request nunca lançam erro: devolvem os dados ou `{ success: false, message }`. A store separa os casos com `"success" in data` e grava `request: { success, message }`.
+- As funções de request nunca lançam erro: devolvem os dados ou `{ success: false, message }`. A store zera `request` no início da ação, separa os casos com `"success" in data` e grava `request: { success, message }`. A UI mostra o erro com `RequestError` (`app/components/requestError`).
 - Exceção: `makeOrder` devolve `{ success, message }` direto, e quem chama dispara o toast.
 
 ## Regras de negócio
@@ -28,8 +28,9 @@ Vitrine multi-tenant (uma loja por subdomínio). React 19 + Vite 7 + TS + Tailwi
 - `loadConfig()` (`src/constants/api.ts`) **sobrescreve** `API_BASE_URL` no boot com o `url` de `https://luanbian.github.io/ger-estoque-config/data.json`. É intencional durante o desenvolvimento. `VITE_PUBLIC_API_BASE_URL` só vale quando esse fetch falha.
 - `API_BASE_URL` é um `export let` que muda depois do import: leia dentro de funções, nunca no topo do módulo.
 - `getSubdomain()` só reconhece `*.localhost`. É intencional enquanto não existe produção.
-- As 3 stores persistem o estado inteiro no localStorage, sem `version`/`partialize`. `setShowcase` devolve o cache quando existe `_id`, então a vitrine nunca é rebuscada. Se mudar a forma de `Showcase`, adicione `version`/`migrate`. O parâmetro de `setShowcase` é ignorado: a função faz o fetch.
-- O `request` das stores showcase/catalog é gravado mas ninguém lê; se a API falhar, a tela fica em "Loading..." para sempre.
+- As 3 stores persistem o estado inteiro no localStorage, sem `version`/`partialize`. Se mudar a forma de um tipo persistido, adicione `version`/`migrate`.
+- Toda ação que troca `catalog.items` precisa definir `selectedCategoryId` antes do `await` e conferi-lo depois; é assim que respostas fora de ordem são descartadas.
+- O efeito do catálogo em `app/layout.tsx` depende de `showcase?._id`, não do objeto: `fetchShowcase` cria um objeto novo a cada carga.
 - `CatalogItem.quantity` é campo do carrinho misturado ao tipo que vem da API.
 - Não recoloque `baseUrl` nem `ignoreDeprecations` nos tsconfigs: `paths` funciona sem eles, e o valor `"6.0"` quebra o `tsc -b` no TS 5.9.
 - Tailwind v4 via `@tailwindcss/vite` + `src/index.css`. O `tailwind.config.js` não é lido (não há `@config`).

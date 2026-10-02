@@ -4,28 +4,27 @@ import { useShowcaseStore } from "@/features/showcase/showcase";
 import { useCatalogStore } from "@/features/catalog/catalog";
 
 const MainLayout = () => {
-  const { showcase, setShowcase, setRequest } = useShowcaseStore(
+  const { showcase, request, fetchShowcase } = useShowcaseStore(
     (state) => state,
   );
-  const {
-    catalog,
-    setCatalog,
-    setRequest: setRequestCatalog,
-  } = useCatalogStore((state) => state);
+  const { catalog, setCatalog } = useCatalogStore((state) => state);
+  const showcaseId = showcase?._id;
 
   useEffect(() => {
-    setShowcase(null);
-    setRequest({ success: true, message: null });
-  }, [setShowcase, setRequest]);
+    fetchShowcase();
+  }, [fetchShowcase]);
 
   useEffect(() => {
-    if (showcase?._id) {
-      setCatalog(showcase._id);
-      setRequestCatalog({ success: true, message: null });
-    }
-  }, [setCatalog, setRequestCatalog, showcase]);
+    if (!showcaseId) return;
+    setCatalog(showcaseId);
+  }, [setCatalog, showcaseId]);
 
-  return <Home data={{ showcase, catalog }} />;
+  return (
+    <Home
+      data={{ showcase, catalog, request }}
+      actions={{ fetchShowcase }}
+    />
+  );
 };
 
 export default MainLayout;
