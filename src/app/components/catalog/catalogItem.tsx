@@ -31,7 +31,7 @@ export const CatalogItem = ({ data, actions }: Props) => {
   const discountLabel = pricing?.discount
     ? pricing.discount.type === "percentage"
       ? `-${pricing.discount.value}%`
-      : `-R$ ${convertFromCents(pricing.discount.value)}`
+      : `-${convertFromCents(pricing.discount.value)}`
     : null;
 
   return (
@@ -65,23 +65,23 @@ export const CatalogItem = ({ data, actions }: Props) => {
       </CardHeader>
 
       <CardContent className="flex-1 pb-2 space-y-0.5">
-        {pricing?.basePriceInCents && (
+        {pricing && pricing.basePriceInCents > 0 && (
           <>
             <p className={`text-sm line-through ${hasDiscount ? "text-muted-foreground" : "invisible"}`}>
-              R$ {convertFromCents(pricing.basePriceInCents)}
+              {convertFromCents(pricing.basePriceInCents)}
             </p>
             {hasDiscount && pricing.finalPriceInCents ? (
               <p className="text-lg font-bold text-green-600">
-                R$ {convertFromCents(pricing.finalPriceInCents)}
+                {convertFromCents(pricing.finalPriceInCents)}
               </p>
             ) : (
               <p className="text-lg font-semibold">
-                R$ {convertFromCents(getPriceInCents(item))}
+                {convertFromCents(getPriceInCents(item))}
               </p>
             )}
             <p className={`text-xs ${hasInstallments ? "text-muted-foreground" : "invisible"}`}>
               {hasInstallments
-                ? `${pricing.installments!.maxInstallments}x de R$ ${convertFromCents(pricing.installments!.installmentPriceInCents)}${pricing.installments!.interestFree ? " sem juros" : " com juros"}`
+                ? `${pricing.installments!.maxInstallments}x de ${convertFromCents(pricing.installments!.installmentPriceInCents)}${pricing.installments!.interestFree ? " sem juros" : " com juros"}`
                 : "placeholder"}
             </p>
           </>

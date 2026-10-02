@@ -3,15 +3,17 @@
 Vitrine multi-tenant (uma loja por subdomínio). React 19 + Vite 7 + TS + Tailwind v4 + shadcn/Radix + Zustand 5. O carrinho envia um "pedido" (`POST /order`) sem pagamento. O projeto está em desenvolvimento e só existe ambiente local, sem produção.
 
 ## Comandos
-- `npm install` · `npm run dev` · `npm run build` · `npm run preview` · `npm run lint`
-- `build` roda `tsc -b` antes do `vite build`: é o único typecheck. Não há testes nem Prettier.
+- `npm install` · `npm run dev` · `npm run build` · `npm run preview` · `npm run lint` · `npm test`
+- `build` roda `tsc -b` antes do `vite build`: é o único typecheck. Não há Prettier.
+- Testes com vitest, em `*.test.ts` ao lado do código. Em testes de store, mocke `./requests` com `vi.mock` e faça stub de `window.localStorage` em `vi.hoisted`, como em `features/order/order.test.ts`.
 - Para abrir uma loja no dev: `http://<subdominio>.localhost:5173`.
 
 ## Componentes
 - `src/app/**/layout.tsx` é o container (stores, efeitos, navegação) e `page.tsx` é apresentacional. Os nomes lembram Next, mas as rotas são declaradas à mão em `src/App.tsx`.
 - Props no formato `interface Props { data: {...}; actions: {...} }`, com `export const X`. Layout e page usam `export default`.
 - Use as primitivas de `@/components/ui/*` (shadcn new-york com `forwardRef`), `cn()` de `@/lib/utils` e `cva` para variantes, como em `button.tsx`. Não copie os `<button>` crus com classes repetidas de `pages/order/page.tsx`.
-- Preços estão em centavos (`*InCents`); exiba com `convertFromCents`. Imagens: `` `${ASSETS_BASE_URL}${path}` ``.
+- Elemento clicável é `<button type="button">`, nunca `div` com `onClick`. `PopoverTrigger`/`DialogTrigger` sem `asChild` já renderizam um `button`.
+- Preços estão em centavos (`*InCents`). Exiba com `convertFromCents`, que já devolve `R$ 1.234,50`: não prefixe `R$`. Imagens: `` `${ASSETS_BASE_URL}${path}` ``.
 
 ## Stores (`src/features/<domínio>/`)
 - Arquivos: `<domínio>.ts` (store), `request(s).ts` (axios) e `types.ts` (inclui o tipo `XStore`).

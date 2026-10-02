@@ -41,15 +41,16 @@ export const Header = ({ data }: Props) => {
         {showName && <h1 className="text-lg font-bold ml-2">{name}</h1>}
       </div>
       <Popover>
-        <PopoverTrigger asChild className="cursor-pointer">
-          <div className="relative">
-            <ShoppingCart />
-            {products.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 text-center border border-white shadow">
-                {products.length}
-              </span>
-            )}
-          </div>
+        <PopoverTrigger
+          className="relative cursor-pointer"
+          aria-label="Carrinho de compras"
+        >
+          <ShoppingCart />
+          {products.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 text-center border border-white shadow">
+              {products.length}
+            </span>
+          )}
         </PopoverTrigger>
         <PopoverContent className="bg-white rounded-lg p-4">
           <div>
@@ -65,7 +66,6 @@ export const Header = ({ data }: Props) => {
                     </span>
                     {getPriceInCents(product) ? (
                       <span>
-                        R${" "}
                         {convertFromCents(
                           getPriceInCents(product) * product.quantity,
                         )}
@@ -84,7 +84,7 @@ export const Header = ({ data }: Props) => {
             <div className="flex justify-between">
               <span className="font-bold">Total:</span>
               <span className="font-bold">
-                R$ {convertFromCents(totalPrice())}
+                {convertFromCents(totalPrice())}
               </span>
             </div>
             <Button

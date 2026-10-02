@@ -53,7 +53,9 @@ const OrderPage = ({ data, actions }: Props) => {
                   </span>
                   {getPriceInCents(product) ? (
                     <span className="font-semibold">
-                      R$ {convertFromCents(getPriceInCents(product))}
+                      {convertFromCents(
+                        getPriceInCents(product) * product.quantity,
+                      )}
                     </span>
                   ) : null}
 
@@ -68,7 +70,7 @@ const OrderPage = ({ data, actions }: Props) => {
             </ul>
             <div className="mt-6 flex justify-end items-center">
               <span className="text-lg font-bold">
-                Total: R$ {convertFromCents(totalPrice)}
+                Total: {convertFromCents(totalPrice)}
               </span>
             </div>
           </div>
