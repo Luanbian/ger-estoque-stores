@@ -32,12 +32,14 @@ export const CatalogCarousel = ({ data, actions }: Props) => {
   return (
     <Carousel className="w-full">
       <CarouselContent className="-ml-1">
-        <CarouselItem
-          className="basis-auto pl-1"
-          style={{ cursor: "pointer" }}
-          onClick={() => selectCatalogCategory(null)}
-        >
-          <div className="p-1">Todos</div>
+        <CarouselItem className="basis-auto pl-1">
+          <button
+            type="button"
+            className="p-1 cursor-pointer"
+            onClick={() => selectCatalogCategory(null)}
+          >
+            Todos
+          </button>
         </CarouselItem>
         {rootCategories.map((category) => {
           const subCategories = categories.filter(
@@ -46,13 +48,14 @@ export const CatalogCarousel = ({ data, actions }: Props) => {
 
           if (subCategories.length === 0) {
             return (
-              <CarouselItem
-                key={category._id}
-                className="basis-auto pl-1"
-                style={{ cursor: "pointer" }}
-                onClick={() => selectCatalogCategory(category._id)}
-              >
-                <div className="p-1">{category.name}</div>
+              <CarouselItem key={category._id} className="basis-auto pl-1">
+                <button
+                  type="button"
+                  className="p-1 cursor-pointer"
+                  onClick={() => selectCatalogCategory(category._id)}
+                >
+                  {category.name}
+                </button>
               </CarouselItem>
             );
           }
@@ -60,21 +63,20 @@ export const CatalogCarousel = ({ data, actions }: Props) => {
           return (
             <CarouselItem key={category._id} className="basis-auto pl-1">
               <Popover>
-                <PopoverTrigger asChild>
-                  <div className="p-1" style={{ cursor: "pointer" }}>
-                    {category.name}
-                  </div>
+                <PopoverTrigger className="p-1 cursor-pointer">
+                  {category.name}
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-1">
                   <div className="flex flex-col">
                     {subCategories.map((sub) => (
-                      <div
+                      <button
                         key={sub._id}
-                        className="px-3 py-1.5 rounded cursor-pointer hover:bg-accent"
+                        type="button"
+                        className="px-3 py-1.5 rounded text-left cursor-pointer hover:bg-accent"
                         onClick={() => selectCatalogCategory(sub._id)}
                       >
                         {sub.name}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </PopoverContent>

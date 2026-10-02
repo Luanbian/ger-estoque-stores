@@ -15,12 +15,7 @@ export const Presentation = ({ data }: Props) => {
     <div className="flex w-full">
       <div className="w-1/2 flex flex-col justify-center">
         <h2 className="text-3xl font-bold mb-4">{presentation.title}</h2>
-        <BodyBoxes
-          data={{
-            quantity: presentation.sections.length,
-            sections: presentation.sections,
-          }}
-        />
+        <BodyBoxes data={{ sections: presentation.sections }} />
       </div>
       <div className="w-1/2 flex items-center justify-center">
         <img
