@@ -7,13 +7,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import type { CatalogItem } from "@/features/catalog/types";
+import type { CartItem } from "@/features/order/types";
 import { convertFromCents } from "@/utils/convertCents";
 import { getPriceInCents } from "@/utils/getPriceInCents";
 
 interface Props {
   data: {
-    order: CatalogItem[];
+    order: CartItem[];
     totalPrice: number;
   };
   actions: {

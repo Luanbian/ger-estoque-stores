@@ -22,16 +22,17 @@ Vitrine multi-tenant (uma loja por subdomínio). React 19 + Vite 7 + TS + Tailwi
 ## Regras de negócio
 - O preço que vale é `finalPriceInCents ?? basePriceInCents`, inclusive no total: use sempre `getPriceInCents()` (`@/utils/getPriceInCents`).
 - Um envio com sucesso limpa o carrinho (na store) e fecha o dialog; se der erro, o form mantém os dados.
+- No payload do pedido, o telefone vai só com dígitos (10–11) e o email vazio vai como `null`.
 - Não assuma que o backend recalcula preços ou valida `tenantId`/`domain`; isso não foi confirmado.
 
 ## Armadilhas
 - `loadConfig()` (`src/constants/api.ts`) **sobrescreve** `API_BASE_URL` no boot com o `url` de `https://luanbian.github.io/ger-estoque-config/data.json`. É intencional durante o desenvolvimento. `VITE_PUBLIC_API_BASE_URL` só vale quando esse fetch falha.
 - `API_BASE_URL` é um `export let` que muda depois do import: leia dentro de funções, nunca no topo do módulo.
 - `getSubdomain()` só reconhece `*.localhost`. É intencional enquanto não existe produção.
-- As 3 stores persistem o estado inteiro no localStorage, sem `version`/`partialize`. Se mudar a forma de um tipo persistido, adicione `version`/`migrate`.
+- Só `order` (campo `products`) e `showcase` (campo `showcase`) persistem, com `version` e `partialize`; `catalog` não persiste. Ao mudar a forma de um tipo persistido, incremente `version`: sem `migrate`, o estado salvo é descartado.
 - Toda ação que troca `catalog.items` precisa definir `selectedCategoryId` antes do `await` e conferi-lo depois; é assim que respostas fora de ordem são descartadas.
 - O efeito do catálogo em `app/layout.tsx` depende de `showcase?._id`, não do objeto: `fetchShowcase` cria um objeto novo a cada carga.
-- `CatalogItem.quantity` é campo do carrinho misturado ao tipo que vem da API.
+- O carrinho guarda `CartItem` (`CatalogItem` + `quantity`). Quando o `setCatalog` dá certo, ele atualiza as linhas do carrinho pelo `_id` via `refreshProducts`.
 - Não recoloque `baseUrl` nem `ignoreDeprecations` nos tsconfigs: `paths` funciona sem eles, e o valor `"6.0"` quebra o `tsc -b` no TS 5.9.
 - Tailwind v4 via `@tailwindcss/vite` + `src/index.css`. O `tailwind.config.js` não é lido (não há `@config`).
 - `components/ui/sonner.tsx` não é usado: `App.tsx` importa `Toaster` direto de `sonner`.

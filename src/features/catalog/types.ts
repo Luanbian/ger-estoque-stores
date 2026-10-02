@@ -34,8 +34,6 @@ export interface CatalogItem {
   };
   createdAt: Date;
   updatedAt: Date;
-
-  quantity: number;
 }
 
 export interface CatalogStore {

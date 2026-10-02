@@ -42,6 +42,8 @@ export const useShowcaseStore = create<ShowcaseStore>()(
     }),
     {
       name: "showcase-store",
+      version: 1,
+      partialize: (state) => ({ showcase: state.showcase }),
     },
   ),
 );
