@@ -38,6 +38,5 @@ export interface ShowcaseStore {
     success: boolean;
     message: string | null;
   };
-  setShowcase: (showcase: Showcase | null) => void;
-  setRequest: (request: { success: boolean; message: string | null }) => void;
+  fetchShowcase: () => Promise<void>;
 }

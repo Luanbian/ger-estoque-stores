@@ -3,18 +3,22 @@ import { CatalogItem } from "./catalogItem";
 import type { Catalog } from "@/features/catalog/types";
 import { CatalogCarousel } from "./catalogCategory";
 import { useCatalogStore } from "@/features/catalog/catalog";
+import { RequestError } from "../requestError";
 
 export interface Props {
   data: {
     catalog: Catalog | null;
+    showcaseId: string;
   };
 }
 
 export const CatalogList = ({ data }: Props) => {
-  const { catalog } = data;
+  const { catalog, showcaseId } = data;
 
   const { addItem } = useOrderStore((state) => state);
-  const { selectCatalogCategory } = useCatalogStore((state) => state);
+  const { request, setCatalog, selectCatalogCategory } = useCatalogStore(
+    (state) => state,
+  );
 
   return (
     <main className="min-h-screen bg-muted/40 py-12">
@@ -24,6 +28,13 @@ export const CatalogList = ({ data }: Props) => {
           data={{ categories: catalog?.categories }}
           actions={{ selectCatalogCategory }}
         />
+
+        {!request.success && (
+          <RequestError
+            data={{ message: request.message }}
+            actions={{ retry: () => setCatalog(showcaseId) }}
+          />
+        )}
 
         <div
           className="

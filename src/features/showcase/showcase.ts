@@ -6,23 +6,28 @@ import { getShowcase } from "./request";
 
 export const useShowcaseStore = create<ShowcaseStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       showcase: null,
       request: {
         success: true,
         message: null,
       },
 
-      setShowcase: async () => {
-        if (get().showcase?._id) {
+      fetchShowcase: async () => {
+        const domain = getSubdomain();
+        if (!domain) {
           set({
-            showcase: {
-              ...get().showcase!,
+            request: {
+              success: false,
+              message:
+                "Loja não identificada. Acesse pelo endereço da loja, por exemplo minhaloja.localhost.",
             },
           });
           return;
         }
-        const data = await getShowcase(getSubdomain());
+
+        set({ request: { success: true, message: null } });
+        const data = await getShowcase(domain);
         if ("success" in data) {
           set({
             request: {
@@ -34,8 +39,6 @@ export const useShowcaseStore = create<ShowcaseStore>()(
         }
         set({ showcase: data });
       },
-
-      setRequest: (request) => set({ request }),
     }),
     {
       name: "showcase-store",
