@@ -11,6 +11,23 @@ export const postMakeOrder = async (payload: CreateOrderPayload) => {
     };
   } catch (error) {
     console.error("Error making order:", error);
+    const status = axios.isAxiosError(error)
+      ? error.response?.status
+      : undefined;
+    if (axios.isAxiosError(error) && !status) {
+      return {
+        success: false,
+        message:
+          "Sem resposta do servidor. Verifique sua conexão e tente novamente.",
+      };
+    }
+    if (status && status < 500) {
+      return {
+        success: false,
+        message:
+          "Não foi possível registrar o pedido. Confira os dados informados e tente novamente.",
+      };
+    }
     return {
       success: false,
       message:

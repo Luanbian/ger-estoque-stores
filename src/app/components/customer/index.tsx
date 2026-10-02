@@ -25,7 +25,13 @@ export const CustomerComponent = ({ actions }: Props) => {
   } = useForm<CreateOrderPayload["customer"]>();
 
   const finishOrder = async (data: CreateOrderPayload["customer"]) => {
-    if (!showcase) return;
+    if (!showcase) {
+      toast.error(
+        "Não foi possível identificar a loja. Recarregue a página e tente novamente.",
+        { position: "top-center" },
+      );
+      return;
+    }
 
     const payload: CreateOrderPayload = {
       tenantId: showcase.tenantId,
@@ -38,9 +44,9 @@ export const CustomerComponent = ({ actions }: Props) => {
         priceSnapshot: getPriceInCents(product),
       })),
       customer: {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
+        name: data.name.trim(),
+        email: data.email?.trim() || null,
+        phone: data.phone.replace(/\D/g, ""),
       },
     };
 
@@ -62,7 +68,9 @@ export const CustomerComponent = ({ actions }: Props) => {
       <Input
         type="text"
         placeholder="Nome"
-        {...register("name", { required: "O nome é obrigatório" })}
+        {...register("name", {
+          validate: (value) => value.trim() !== "" || "O nome é obrigatório",
+        })}
       />
       {errors.name && (
         <span className="text-red-500">{errors.name.message}</span>
@@ -76,7 +84,12 @@ export const CustomerComponent = ({ actions }: Props) => {
       <Input
         type="tel"
         placeholder="Telefone"
-        {...register("phone", { required: "O telefone é obrigatório" })}
+        {...register("phone", {
+          required: "O telefone é obrigatório",
+          validate: (value) =>
+            /^\d{10,11}$/.test(value.replace(/\D/g, "")) ||
+            "Informe o telefone com DDD",
+        })}
       />
       {errors.phone && (
         <span className="text-red-500">{errors.phone.message}</span>

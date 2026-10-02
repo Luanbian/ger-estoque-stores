@@ -1,10 +1,15 @@
 import type { CatalogItem } from "../catalog/types";
 
+export interface CartItem extends CatalogItem {
+  quantity: number;
+}
+
 export interface OrderStore {
-  products: CatalogItem[];
+  products: CartItem[];
   addItem: (product: CatalogItem) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
+  refreshProducts: (items: CatalogItem[]) => void;
   totalPrice: () => number;
   makeOrder: (
     payload: CreateOrderPayload,
