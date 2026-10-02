@@ -9,6 +9,7 @@ import {
 import { ASSETS_BASE_URL } from "@/constants/assets";
 import type { CatalogItem as CatalogItemType } from "@/features/catalog/types";
 import { convertFromCents } from "@/utils/convertCents";
+import { getPriceInCents } from "@/utils/getPriceInCents";
 
 interface Props {
   data: {
@@ -75,7 +76,7 @@ export const CatalogItem = ({ data, actions }: Props) => {
               </p>
             ) : (
               <p className="text-lg font-semibold">
-                R$ {convertFromCents(pricing.basePriceInCents)}
+                R$ {convertFromCents(getPriceInCents(item))}
               </p>
             )}
             <p className={`text-xs ${hasInstallments ? "text-muted-foreground" : "invisible"}`}>

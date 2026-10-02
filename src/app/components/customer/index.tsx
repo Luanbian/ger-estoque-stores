@@ -6,6 +6,7 @@ import type { CreateOrderPayload } from "@/features/order/types";
 import { useShowcaseStore } from "@/features/showcase/showcase";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { getPriceInCents } from "@/utils/getPriceInCents";
 
 export const CustomerComponent = () => {
   const { products, totalPrice, request, makeOrder } = useOrderStore(
@@ -31,10 +32,7 @@ export const CustomerComponent = () => {
         productId: product._id,
         nameSnapshot: product.title,
         quantity: product.quantity,
-        priceSnapshot:
-          product.pricing?.finalPriceInCents ??
-          product.pricing?.basePriceInCents ??
-          0,
+        priceSnapshot: getPriceInCents(product),
       })),
       customer: {
         name: data.name,

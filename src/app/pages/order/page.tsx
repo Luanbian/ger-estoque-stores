@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import type { CatalogItem } from "@/features/catalog/types";
 import { convertFromCents } from "@/utils/convertCents";
+import { getPriceInCents } from "@/utils/getPriceInCents";
 
 interface Props {
   data: {
@@ -48,9 +49,9 @@ const OrderPage = ({ data, actions }: Props) => {
                   <span>
                     {product.title} x {product.quantity}
                   </span>
-                  {product.pricing?.basePriceInCents ? (
+                  {getPriceInCents(product) ? (
                     <span className="font-semibold">
-                      R$ {convertFromCents(product.pricing.basePriceInCents)}
+                      R$ {convertFromCents(getPriceInCents(product))}
                     </span>
                   ) : null}
 

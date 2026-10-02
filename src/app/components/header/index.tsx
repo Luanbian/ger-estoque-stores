@@ -7,6 +7,7 @@ import {
 import { ASSETS_BASE_URL } from "@/constants/assets";
 import { useOrderStore } from "@/features/order/order";
 import { convertFromCents } from "@/utils/convertCents";
+import { getPriceInCents } from "@/utils/getPriceInCents";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -62,11 +63,11 @@ export const Header = ({ data }: Props) => {
                     <span>
                       {product.title} x {product.quantity}
                     </span>
-                    {product?.pricing?.basePriceInCents ? (
+                    {getPriceInCents(product) ? (
                       <span>
                         R${" "}
                         {convertFromCents(
-                          product.pricing.basePriceInCents * product.quantity,
+                          getPriceInCents(product) * product.quantity,
                         )}
                       </span>
                     ) : null}

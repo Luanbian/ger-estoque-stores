@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import type { OrderStore } from "./types";
 import type { CatalogItem } from "../catalog/types";
 import { postMakeOrder } from "./requests";
+import { getPriceInCents } from "@/utils/getPriceInCents";
 
 export const useOrderStore = create<OrderStore>()(
   persist(
@@ -43,8 +44,7 @@ export const useOrderStore = create<OrderStore>()(
       totalPrice: () =>
         get().products.reduce(
           (total, product) =>
-            total +
-            (product?.pricing?.basePriceInCents || 0) * product.quantity,
+            total + getPriceInCents(product) * product.quantity,
           0,
         ),
 
